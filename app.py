@@ -1,481 +1,492 @@
 ﻿import streamlit as st
+import random
 
 # Configuration
 st.set_page_config(
     page_title="Quiz Code de la Route",
     page_icon="🚗",
-    layout="centered"
+    layout="wide"
 )
 
 # ============================================================
-# THÈMES AVEC LEURS QUESTIONS
+# THÈMES AVEC LEURS QUESTIONS (CORRIGÉES)
 # ============================================================
 
 themes = {
-    "💡 Éclairage & Visibilité": {
-        "icon": "💡",
-        "questions": [
-            {
-                "question": "À quel moment dois-tu utiliser tes feux de route la nuit hors agglomération ?",
-                "options": ["Tout le temps", "Seulement quand il n'y a personne en face", "Jamais, je roule aux feux de croisement", "Seulement en ville"],
-                "correct": 1,
-                "explication": "Les feux de route éblouissent les autres conducteurs. Il faut les éteindre dès qu'un véhicule arrive en face."
-            },
-            {
-                "question": "Dans un giratoire, quand dois-tu mettre ton clignotant à gauche ?",
-                "options": ["Quand je sors à droite", "Quand je vais tout droit", "Quand je vais à gauche ou fais demi-tour", "Je ne mets jamais de clignotant dans un giratoire"],
-                "correct": 2,
-                "explication": "Le clignotant gauche indique que tu restes engagé dans le giratoire pour aller à gauche ou faire demi-tour."
-            },
-            {
-                "question": "Dans quel cas n'as-tu PAS besoin d'utiliser ton clignotant ?",
-                "options": ["Pour tourner à droite", "Pour tourner à gauche", "Pour continuer tout droit", "Pour sortir d'un stationnement"],
-                "correct": 2,
-                "explication": "Le clignotant sert à indiquer un changement de direction. Si tu continues tout droit, pas besoin."
-            },
-            {
-                "question": "À quelle distance approximative les feux de route éclairent-ils ?",
-                "options": ["30 mètres", "100 mètres", "200 mètres", "500 mètres"],
-                "correct": 2,
-                "explication": "Les feux de route éclairent jusqu'à environ 200 mètres, contre 30 mètres pour les feux de croisement."
-            },
-            {
-                "question": "Quand dois-tu utiliser tes feux de brouillard avant ?",
-                "options": ["Quand il pleut légèrement", "Quand il y a du brouillard ou des chutes de neige", "Quand il fait nuit en ville", "Toujours, c'est plus sûr"],
-                "correct": 1,
-                "explication": "Les feux de brouillard avant sont réservés aux conditions de visibilité réduite (brouillard, neige, pluie intense)."
-            },
-            {
-                "question": "Que signifient tes feux de détresse (warning) ?",
-                "options": ["Je vais me garer", "J'indique un danger ou un ralentissement important", "Je remercie un autre conducteur", "Je vais faire demi-tour"],
-                "correct": 1,
-                "explication": "Les feux de détresse signalent un danger inhabituel ou un ralentissement brutal aux autres usagers."
-            },
-            {
-                "question": "Sur une voie rapide, que dois-tu faire si tu vois des véhicules immobilisés ?",
-                "options": ["Klaxonner pour les prévenir", "Ralentir et rester sur ta voie", "Changer de voie si possible", "Accélérer pour passer vite"],
-                "correct": 2,
-                "explication": "Changer de voie permet d'éviter les véhicules immobilisés et de protéger les personnes qui pourraient être à côté."
-            },
-            {
-                "question": "Quand dois-tu allumer tes feux de croisement ?",
-                "options": ["Uniquement la nuit", "La nuit et quand la visibilité est réduite", "Uniquement quand il pleut", "Toujours, même en plein jour"],
-                "correct": 1,
-                "explication": "Les feux de croisement sont obligatoires la nuit, mais aussi par temps de pluie, brouillard ou dans les tunnels."
-            },
-            {
-                "question": "Un véhicule arrive en face avec ses feux de route allumés. Que fais-tu ?",
-                "options": ["Tu allumes tes feux de route aussi", "Tu klaxonnes pour le prévenir", "Tu ralentis et regardes sur le bord droit", "Tu fais un appel de phares et tu restes concentré"],
-                "correct": 2,
-                "explication": "Il faut ralentir et regarder sur le bord droit de la chaussée pour ne pas être ébloui. Un bref appel de phares peut rappeler l'autre conducteur."
-            },
-            {
-                "question": "Que signifie un clignotant droit dans un giratoire ?",
-                "options": ["Je vais à gauche", "Je sors du giratoire", "Je vais tout droit", "Je fais demi-tour"],
-                "correct": 1,
-                "explication": "Le clignotant droit indique que tu vas sortir du giratoire à la prochaine sortie."
-            }
-        ]
-    },
-    "🚦 Priorités & Intersections": {
-        "icon": "🚦",
-        "questions": [
-            {
-                "question": "Dans un giratoire, qui a la priorité ?",
-                "options": ["Celui qui entre", "Celui qui est déjà engagé", "Celui qui va le plus vite", "Celui qui vient de droite"],
-                "correct": 1,
-                "explication": "La règle dans un giratoire est : priorité à gauche, donc aux véhicules déjà engagés."
-            },
-            {
-                "question": "Dans un rond-point (sans signalisation), qui a la priorité ?",
-                "options": ["Priorité à gauche", "Priorité à droite", "Priorité à celui qui entre", "Priorité au plus gros véhicule"],
-                "correct": 1,
-                "explication": "Par défaut, dans un rond-point (non giratoire), c'est la priorité à droite qui s'applique."
-            },
-            {
-                "question": "Dans une voie verte, qui doit céder le passage ?",
-                "options": ["Celui qui entre", "Celui qui sort", "Celui qui va tout droit", "Personne, c'est prioritaire"],
-                "correct": 1,
-                "explication": "La voie verte est prioritaire. Celui qui en sort doit céder le passage aux usagers qui restent sur la voie."
-            },
-            {
-                "question": "Au feu vert, si tu tournes à droite, que dois-tu faire ?",
-                "options": ["Tu passes sans t'arrêter", "Tu laisses passer les piétons qui traversent", "Tu laisses passer les usagers venant en face", "Tu klaxonnes pour signaler ta présence"],
-                "correct": 1,
-                "explication": "Au feu vert, tu dois laisser passer les piétons qui traversent et les vélos si un sas vélo existe."
-            },
-            {
-                "question": "Que fais-tu si un obstacle bloque ta voie ?",
-                "options": ["Tu accélères pour le contourner", "Tu klaxonnes pour qu'il bouge", "Tu cèdes le passage", "Tu fais demi-tour"],
-                "correct": 2,
-                "explication": "En présence d'un obstacle, c'est à toi de céder le passage si tu peux le contourner."
-            },
-            {
-                "question": "Qui a la priorité dans une intersection avec panneau 'STOP' ?",
-                "options": ["Le premier arrivé", "Celui qui vient de droite", "Celui qui s'est arrêté en premier", "Aucun, il faut s'arrêter et céder le passage à tous"],
-                "correct": 3,
-                "explication": "Le STOP impose de s'arrêter et de céder le passage à tous les usagers avant de s'engager."
-            },
-            {
-                "question": "Quand tu arrives à un feu rouge, tu dois :",
-                "options": ["Ralentir et passer si rien ne vient", "T'arrêter au niveau du feu", "T'arrêter avant la ligne d'arrêt", "T'arrêter après la ligne d'arrêt"],
-                "correct": 2,
-                "explication": "L'arrêt doit se faire avant le marquage au sol (ligne d'arrêt ou sas vélo)."
-            },
-            {
-                "question": "Que signifie un panneau 'Cédez le passage' ?",
-                "options": ["Tu as la priorité", "Tu dois t'arrêter obligatoirement", "Tu dois ralentir et céder si nécessaire", "Tu dois accélérer pour passer"],
-                "correct": 2,
-                "explication": "Le cédez-le-passage signifie que tu dois ralentir et laisser passer si d'autres usagers arrivent."
-            },
-            {
-                "question": "Dans une intersection sans signalisation, qui a la priorité ?",
-                "options": ["Celui qui vient de gauche", "Celui qui vient de droite", "Le premier arrivé", "Aucun, c'est au jugement"],
-                "correct": 1,
-                "explication": "Sans signalisation, c'est la règle de la priorité à droite qui s'applique en France."
-            },
-            {
-                "question": "Tu arrives à un feu orange. Que fais-tu ?",
-                "options": ["Tu accélères pour passer", "Tu freines si c'est possible sans danger", "Tu passes toujours", "Tu klaxonnes pour prévenir"],
-                "correct": 1,
-                "explication": "Le feu orange signifie : tu dois t'arrêter si tu peux le faire en sécurité. Sinon, tu passes avec prudence."
-            }
-        ]
-    },
-    "🏎️ Vitesse & Distances": {
+    "🏎️ Vitesse": {
         "icon": "🏎️",
         "questions": [
             {
-                "question": "Quelle est la vitesse maximale en agglomération ?",
-                "options": ["30 km/h", "50 km/h", "70 km/h", "90 km/h"],
-                "correct": 1,
-                "explication": "La vitesse maximale en ville est de 50 km/h, sauf zones à 30 km/h."
+                "question": "Quelle est la vitesse maximale autorisée en agglomération ?",
+                "options": ["30 km/h", "40 km/h", "50 km/h", "60 km/h"],
+                "correct": 2,
+                "explication": "La vitesse maximale en ville est de 50 km/h (sauf zones 30)."
             },
             {
-                "question": "Quelle est la vitesse maximale hors agglomération (valeur générale) ?",
+                "question": "Quelle est la vitesse maximale autorisée en rase campagne (hors agglomération) ?",
                 "options": ["70 km/h", "80 km/h", "90 km/h", "100 km/h"],
                 "correct": 1,
-                "explication": "Hors agglomération, la limite générale est de 80 km/h (sauf sections à 90 km/h)."
+                "explication": "La limite générale hors agglomération est de 80 km/h."
             },
             {
-                "question": "Que deviennent les distances d'arrêt quand tu roules plus vite ?",
-                "options": ["Elles diminuent", "Elles restent identiques", "Elles augmentent", "Seule la distance de freinage augmente"],
-                "correct": 2,
-                "explication": "La distance d'arrêt = distance de réaction + distance de freinage. Les deux augmentent avec la vitesse."
-            },
-            {
-                "question": "Qu'est-ce qui augmente ton temps de réaction ?",
-                "options": ["L'expérience", "La fatigue et l'alcool", "Une bonne visibilité", "Des pneus neufs"],
+                "question": "Qu'est-ce qui compose la distance d'arrêt ?",
+                "options": ["Freinage × 2", "Réaction + Freinage", "Réaction × Freinage", "Arrêt - Réaction"],
                 "correct": 1,
-                "explication": "La fatigue, l'alcool, les médicaments et la distraction allongent le temps de réaction."
+                "explication": "La distance d'arrêt est la somme des distances de réaction et de freinage."
             },
             {
-                "question": "Quelle est la vitesse maximale sur autoroute par temps de pluie ?",
+                "question": "Qu'est-ce qui augmente la distance de réaction ? (plusieurs réponses)",
+                "options": ["Alcool", "Fatigue", "Bonne visibilité", "Distraction"],
+                "correct": [0, 1, 3],
+                "explication": "L'alcool, la fatigue et la distraction allongent le temps de réaction."
+            },
+            {
+                "question": "Quelle est la vitesse maximale sur une route 2x1 voie (2 voies d'un côté, 1 de l'autre) ?",
+                "options": ["70 km/h", "80 km/h", "90 km/h", "110 km/h"],
+                "correct": 2,
+                "explication": "Sur route à chaussées séparées (2x1), la vitesse est de 90 km/h."
+            },
+            {
+                "question": "En temps de pluie, quelles distances sont augmentées ? (plusieurs réponses)",
+                "options": ["Distance de réaction", "Distance de freinage", "Distance d'arrêt", "Distance de visibilité"],
+                "correct": [1, 2],
+                "explication": "La pluie augmente la distance de freinage et donc la distance d'arrêt."
+            },
+            {
+                "question": "Quelle est la vitesse maximale sur autoroute en temps de pluie ?",
                 "options": ["80 km/h", "100 km/h", "110 km/h", "130 km/h"],
                 "correct": 2,
-                "explication": "Sur autoroute, la vitesse maximale est de 110 km/h par temps de pluie (130 km/h par temps sec)."
+                "explication": "Sur autoroute sous la pluie, la vitesse est limitée à 110 km/h."
             },
             {
-                "question": "Quelle est la distance de sécurité minimale sur autoroute ?",
-                "options": ["50 mètres", "2 secondes", "100 mètres", "5 secondes"],
-                "correct": 1,
-                "explication": "La règle des 2 secondes : garde 2 secondes d'intervalle avec le véhicule qui te précède (environ 73 mètres à 130 km/h)."
-            },
-            {
-                "question": "À 50 km/h, quelle est approximativement ta distance d'arrêt ?",
-                "options": ["10 mètres", "25 mètres", "40 mètres", "60 mètres"],
-                "correct": 1,
-                "explication": "À 50 km/h, la distance d'arrêt est d'environ 25 mètres (réaction + freinage)."
-            },
-            {
-                "question": "Hors agglomération, sur certaines routes, quelle autre vitesse est autorisée ?",
-                "options": ["70 km/h", "80 km/h", "90 km/h", "100 km/h"],
+                "question": "Quelle est la vitesse maximale en temps de verglas ?",
+                "options": ["30 km/h", "40 km/h", "50 km/h", "70 km/h"],
                 "correct": 2,
-                "explication": "Certaines routes sont aménagées pour permettre une vitesse de 90 km/h, mais c'est l'exception."
-            },
-            {
-                "question": "Qu'est-ce qui ralentit ta distance de freinage ?",
-                "options": ["Des pneus neufs", "Une chaussée mouillée", "Un moteur puissant", "Des freins récents"],
-                "correct": 1,
-                "explication": "L'eau sur la chaussée réduit l'adhérence, ce qui augmente considérablement la distance de freinage."
-            },
-            {
-                "question": "Que signifie la règle du 'quart de la distance de sécurité' ?",
-                "options": ["Il faut un quart de la distance d'arrêt devant toi", "Tu dois ralentir d'un quart de ta vitesse", "C'est une règle pour les motos", "C'est une vieille règle qui n'existe plus"],
-                "correct": 0,
-                "explication": "Sur route mouillée, il faut doubler la distance de sécurité (2 secondes → 4 secondes)."
+                "explication": "En cas de verglas, la vitesse maximale est de 50 km/h."
             }
         ]
     },
-    "🛑 Stationnement & Arrêt": {
-        "icon": "🛑",
+    "🚦 Priorité": {
+        "icon": "🚦",
         "questions": [
             {
-                "question": "Que signifie une ligne jaune continue au bord de la chaussée ?",
+                "question": "Le conducteur A est sur la voie principale, le conducteur B est sur la voie verte. Qui a la priorité ?",
+                "options": ["Conducteur A", "Conducteur B", "Le plus rapide", "Celui qui arrive en premier"],
+                "correct": 0,
+                "explication": "Le conducteur A sur la voie principale est prioritaire. La voie verte n'est pas prioritaire, c'est celui qui en sort qui doit céder le passage."
+            },
+            {
+                "question": "Qui est prioritaire face à un obstacle sur la route ?",
+                "options": ["Celui qui arrive en premier", "Le plus lent", "Le conducteur sans obstacle", "Celui qui klaxonne"],
+                "correct": 2,
+                "explication": "Celui qui rencontre un obstacle doit céder le passage."
+            },
+            {
+                "question": "Comment fonctionnent les priorités dans un giratoire ?",
+                "options": ["Priorité à droite", "Priorité aux véhicules déjà engagés", "Priorité à celui qui entre", "Priorité au plus rapide"],
+                "correct": 1,
+                "explication": "Dans un giratoire, la priorité est aux véhicules déjà engagés (priorité à gauche)."
+            },
+            {
+                "question": "Comment fonctionnent les priorités dans un rond-point (sans signalisation) ?",
+                "options": ["Priorité à droite", "Priorité à gauche", "Priorité aux véhicules déjà engagés", "Priorité à celui qui entre"],
+                "correct": 0,
+                "explication": "Dans un rond-point, la règle par défaut est la priorité à droite."
+            },
+            {
+                "question": "Dans le cas d'un carrefour à feux classique, je veux tourner à gauche. Qui a la priorité ?",
+                "options": ["Les véhicules venant de droite", "Les véhicules venant d'en face", "Les piétons", "Personne, je suis prioritaire"],
+                "correct": 1,
+                "explication": "Au feu vert, si tu tournes, tu laisses passer les usagers venant en face."
+            },
+            {
+                "question": "Dans le cas d'un carrefour avec des feux à flèche, je veux tourner à gauche et le feu flèche gauche est vert. Ai-je la priorité ?",
+                "options": ["Non", "Oui", "Seulement si j'ai mon clignotant", "Seulement la nuit"],
+                "correct": 1,
+                "explication": "La flèche verte indique que tu es prioritaire pour tourner à gauche."
+            }
+        ]
+    },
+    "💡 Feux & Éclairage": {
+        "icon": "💡",
+        "questions": [
+            {
+                "question": "Dans des virages serrés, quels feux puis-je activer en complément ?",
+                "options": ["Feux de route", "Feux de détresse", "Feux de brouillard avant", "Feux de position"],
+                "correct": 2,
+                "explication": "Les feux de brouillard avant éclairent plus large dans les virages serrés."
+            },
+            {
+                "question": "Dans quelles situations peut-on allumer les feux de brouillard arrière ? (plusieurs réponses)",
+                "options": ["Fortes pluies", "Brouillard épais", "Nuit claire", "En ville éclairée"],
+                "correct": [0, 1],
+                "explication": "Les feux de brouillard arrière sont réservés aux conditions de visibilité très réduite."
+            },
+            {
+                "question": "En agglomération éclairée, quels feux doivent être activés ?",
+                "options": ["Feux de route", "Feux de croisement", "Feux de détresse", "Feux de brouillard"],
+                "correct": 1,
+                "explication": "En ville éclairée, on utilise les feux de croisement (pas les feux de route)."
+            },
+            {
+                "question": "Quand puis-je activer les feux de route ?",
+                "options": ["Quand il y a du brouillard", "Quand je roule en ville", "Quand aucun autre véhicule n'est devant moi ni n'arrive en face", "Quand je suis en agglomération"],
+                "correct": 2,
+                "explication": "Les feux de route s'utilisent quand il n'y a personne devant moi (ni dans le même sens, ni en face)."
+            },
+            {
+                "question": "Quel est l'usage des feux de position ?",
+                "options": ["Éclairer la route", "Signaler un danger", "Signaler ma présence", "Indiquer un virage"],
+                "correct": 2,
+                "explication": "Les feux de position rendent le véhicule visible aux autres usagers."
+            },
+            {
+                "question": "Dans un giratoire, comment gérer les clignotants pour aller tout droit et le placement ?",
+                "options": ["Je reste au centre et je mets le clignotant gauche", "Extérieur du rond-point + clignotant droit avant de sortir", "Je mets le clignotant gauche tout le temps", "Je ne mets pas de clignotant"],
+                "correct": 1,
+                "explication": "Pour aller tout droit, on reste à l'extérieur et on met le clignotant droit avant de sortir."
+            },
+            {
+                "question": "Quand activer les feux de détresse ?",
+                "options": ["Quand je roule vite", "Ralentissement important ou véhicule immobilisé", "Quand je change de direction", "Quand je suis en tort"],
+                "correct": 1,
+                "explication": "Les feux de détresse signalent un danger inhabituel ou un ralentissement brutal."
+            }
+        ]
+    },
+    "🅿️ Stationnement": {
+        "icon": "🅿️",
+        "questions": [
+            {
+                "question": "Que signifie une ligne jaune continue ?",
                 "options": ["Stationnement interdit, arrêt autorisé", "Arrêt et stationnement interdits", "Arrêt interdit, stationnement autorisé", "Rien de particulier"],
                 "correct": 1,
-                "explication": "La ligne jaune continue interdit l'arrêt ET le stationnement sur toute sa longueur."
+                "explication": "La ligne jaune continue interdit l'arrêt ET le stationnement."
             },
             {
                 "question": "Que signifie une ligne jaune discontinue ?",
-                "options": ["Stationnement interdit, arrêt autorisé", "Arrêt et stationnement interdits", "Arrêt interdit, stationnement autorisé", "Stationnement payant"],
+                "options": ["Stationnement interdit, arrêt autorisé", "Arrêt et stationnement interdits", "Arrêt interdit, stationnement autorisé", "Stationnement gratuit"],
                 "correct": 0,
-                "explication": "La ligne jaune discontinue signifie : le stationnement est interdit, mais l'arrêt (déposer un passager) est autorisé."
+                "explication": "La ligne jaune discontinue interdit le stationnement mais autorise l'arrêt."
             },
             {
-                "question": "Dans quel cas est-il interdit de tenir son téléphone en main ?",
-                "options": ["À l'arrêt à un feu rouge", "Dans un parking", "Sauf si tu es stationné correctement", "Toujours autorisé si tu as le Bluetooth"],
-                "correct": 2,
-                "explication": "Tu ne peux pas tenir ton téléphone en main en conduisant. C'est autorisé si tu es à l'arrêt ET correctement stationné."
-            },
-            {
-                "question": "Que signifie un passage piéton surélevé ?",
-                "options": ["Les voitures doivent ralentir", "Les piétons ont la priorité absolue", "C'est pour les cyclistes", "Ça permet de réduire la vitesse"],
+                "question": "Puis-je consulter mon téléphone lorsque mon véhicule est arrêté et que le moteur est allumé ?",
+                "options": ["Oui", "Non", "Oui, seulement si je suis sur le parking", "Oui, seulement si j'ai le Bluetooth"],
                 "correct": 1,
-                "explication": "Sur un passage piéton surélevé, les piétons ont la priorité absolue."
+                "explication": "Le téléphone en main est interdit sauf si le véhicule est correctement stationné (moteur coupé)."
             },
             {
-                "question": "Peux-tu t'arrêter sur un trottoir ?",
-                "options": ["Oui, si c'est pour déposer quelqu'un", "Oui, si tu mets tes warnings", "Non, jamais", "Oui, uniquement la nuit"],
+                "question": "Dans une voie à sens unique, de quel côté puis-je me stationner ?",
+                "options": ["Uniquement à droite", "Uniquement à gauche", "Gauche et droite", "Seulement sur le trottoir"],
                 "correct": 2,
-                "explication": "Il est interdit de s'arrêter ou de stationner sur un trottoir, sauf si une signalisation l'autorise."
-            },
-            {
-                "question": "Où ne peux-tu PAS stationner dans une intersection ?",
-                "options": ["À plus de 5 mètres", "À moins de 5 mètres", "À moins de 10 mètres", "N'importe où, l'intersection est prioritaire"],
-                "correct": 1,
-                "explication": "Le stationnement est interdit à moins de 5 mètres d'une intersection."
-            },
-            {
-                "question": "Que dois-tu faire avant d'ouvrir ta portière ?",
-                "options": ["Rien, c'est la rue", "Regarder dans le rétroviseur et derrière toi", "Klaxonner pour prévenir", "Ouvrir la portière très lentement"],
-                "correct": 1,
-                "explication": "Tu dois t'assurer qu'aucun véhicule ou cycliste n'arrive avant d'ouvrir ta portière."
-            },
-            {
-                "question": "Peux-tu stationner sur une piste cyclable ?",
-                "options": ["Oui, si c'est pour 5 minutes", "Oui, en mettant tes warnings", "Non, jamais", "Oui, la nuit"],
-                "correct": 2,
-                "explication": "Le stationnement sur une piste cyclable est totalement interdit."
+                "explication": "En sens unique, le stationnement est autorisé des deux côtés."
             }
         ]
     },
-    "⚠️ Sécurité & Divers": {
-        "icon": "⚠️",
+    "🛠️ Divers": {
+        "icon": "🛠️",
         "questions": [
             {
-                "question": "Quel est l'effet de la pluie sur ta conduite ?",
-                "options": ["Ça réduit le temps de réaction", "Ça augmente la distance de freinage", "Ça améliore l'adhérence", "Ça n'a pas d'effet"],
+                "question": "Quand je rencontre un panneau d'obligation de chaînes à neige, j'ai l'obligation que mon véhicule en soit équipé sur :",
+                "options": ["Les 4 roues", "Les roues motrices seulement", "Les roues avant", "Les roues arrière"],
                 "correct": 1,
-                "explication": "La pluie rend la chaussée glissante et augmente la distance de freinage."
+                "explication": "Les chaînes se montent sur les roues motrices du véhicule."
             },
             {
-                "question": "Quelle est la limite d'alcool pour un jeune conducteur (en g/L) ?",
+                "question": "À quelle distance éclairent les feux de croisement ?",
+                "options": ["10 mètres", "30 mètres environ", "50 mètres", "100 mètres"],
+                "correct": 1,
+                "explication": "Les feux de croisement éclairent à environ 30 mètres."
+            },
+            {
+                "question": "À quelle distance éclairent les feux de route ?",
+                "options": ["30 mètres", "50 mètres", "80 mètres", "100 mètres environ"],
+                "correct": 3,
+                "explication": "Les feux de route éclairent à environ 100 mètres."
+            },
+            {
+                "question": "Quand un véhicule me dépasse, je dois : (plusieurs réponses)",
+                "options": ["Maintenir mon allure", "Me serrer à droite", "Accélérer", "Ne jamais accélérer"],
+                "correct": [0, 1, 3],
+                "explication": "Je maintiens mon allure, je me serre à droite et je n'accélère jamais."
+            },
+            {
+                "question": "En tant que piéton, puis-je traverser la route en présence d'un bus à proximité ?",
+                "options": ["Oui", "Non", "Oui, si le bus est à l'arrêt", "Oui, si je cours"],
+                "correct": 1,
+                "explication": "Il est interdit de traverser devant ou derrière un bus ; il faut attendre son départ."
+            },
+            {
+                "question": "En tant que conducteur, un bus s'arrête devant moi à un arrêt. Que dois-je faire ?",
+                "options": ["Le dépasser par la droite", "Attendre qu'il redémarre sans dépasser", "Klaxonner pour qu'il avance", "Le dépasser si c'est sûr"],
+                "correct": 1,
+                "explication": "Il faut attendre que le bus redémarre, car des piétons peuvent traverser."
+            },
+            {
+                "question": "Pour un véhicule électrique, de quoi dépend le temps de conduite ? (plusieurs réponses)",
+                "options": ["De la température extérieure", "De la façon de conduire", "De la charge de la batterie", "Du nombre de passagers"],
+                "correct": [1, 2],
+                "explication": "L'autonomie dépend du style de conduite et du niveau de charge de la batterie."
+            },
+            {
+                "question": "Quel niveau contrôle la tige moteur ?",
+                "options": ["Niveau de liquide de refroidissement", "Niveau d'huile", "Niveau de liquide de frein", "Niveau de lave-glace"],
+                "correct": 1,
+                "explication": "La jauge d'huile mesure le niveau d'huile moteur."
+            },
+            {
+                "question": "Que signifie le voyant pression ?",
+                "options": ["Pression d'huile trop basse", "Pneus sous-gonflés", "Pression des freins", "Pression de la batterie"],
+                "correct": 1,
+                "explication": "Le voyant de pression indique que les pneus sont sous-gonflés."
+            },
+            {
+                "question": "Un niveau de pollution non conforme déclenche une défaillance de quel type au contrôle technique ?",
+                "options": ["Mineure", "Majeure", "Critique", "Aucune"],
+                "correct": 1,
+                "explication": "Une pollution non conforme est une défaillance majeure au contrôle technique."
+            },
+            {
+                "question": "Un chargement sur le toit peut dépasser de combien ?",
+                "options": ["1 mètre à l'avant, 0 à l'arrière", "2 mètres à l'arrière, 0 à l'avant", "3 mètres à l'arrière, 0 à l'avant", "1 mètre partout"],
+                "correct": 2,
+                "explication": "Le chargement peut dépasser à l'arrière (jusqu'à 3 m) mais jamais à l'avant."
+            },
+            {
+                "question": "Quelle est la limite d'alcool pour un jeune conducteur ?",
                 "options": ["0,50 g/L", "0,20 g/L", "0,10 g/L", "0,80 g/L"],
                 "correct": 1,
-                "explication": "Pour les jeunes conducteurs (permis probatoire), la limite est de 0,20 g/L, contre 0,50 g/L pour les conducteurs expérimentés."
+                "explication": "La limite est de 0,20 g/L pour les jeunes conducteurs (contre 0,50 g/L pour les confirmés)."
             },
             {
-                "question": "Que dois-tu faire si un véhicule te dépasse ?",
-                "options": ["Accélérer pour ne pas te faire dépasser", "Maintenir ton allure et serrer à droite", "Ralentir brusquement", "Mettre tes feux de détresse"],
+                "question": "Qu'est-ce qui est inclus dans l'abonnement d'autopartage ? (plusieurs réponses)",
+                "options": ["Énergie (carburant/électricité)", "Assurance", "Entretien", "Péages"],
+                "correct": [0, 1, 2],
+                "explication": "L'autopartage inclut l'énergie, l'assurance et l'entretien. Les péages sont à la charge de l'utilisateur."
+            },
+            {
+                "question": "Quel côté du constat amiable peut être complété après la signature ?",
+                "options": ["Le recto", "Le verso", "Les deux côtés", "Aucun côté"],
                 "correct": 1,
-                "explication": "Si tu es dépassé, tu dois garder ton allure et te serrer à droite pour faciliter le dépassement."
-            },
-            {
-                "question": "Dans cette situation, que NE DOIS-TU JAMAIS faire ?",
-                "options": ["Serrer à droite", "Accélérer", "Ralentir", "Rester sur ta voie"],
-                "correct": 1,
-                "explication": "N'accélère jamais quand quelqu'un te dépasse, c'est dangereux et interdit."
-            },
-            {
-                "question": "Où dois-tu monter les chaînes en cas de neige ?",
-                "options": ["Sur les 4 roues", "Sur les roues avant", "Sur les roues arrière", "Sur les roues motrices"],
-                "correct": 3,
-                "explication": "Les chaînes se montent sur les roues motrices (avant ou arrière selon le véhicule)."
-            },
-            {
-                "question": "Qu'est-ce que l'autopartage inclut généralement ?",
-                "options": ["Carburant, péage et lavage", "Énergie, assurance et entretien", "Pneus, GPS et siège bébé", "Parking, taxes et nettoyage"],
-                "correct": 1,
-                "explication": "L'autopartage inclut l'énergie (électricité/carburant), l'assurance et l'entretien. Les péages sont à la charge de l'utilisateur."
-            },
-            {
-                "question": "Que signifie un voyant de pression qui s'allume ?",
-                "options": ["Un problème de moteur", "Un pneu sous-gonflé", "Un problème de frein", "Une batterie faible"],
-                "correct": 1,
-                "explication": "Le voyant de pression des pneus indique qu'au moins un pneu est sous-gonflé."
-            },
-            {
-                "question": "Que signifie 'Pollution non conforme' au contrôle technique ?",
-                "options": ["Une réparation simple", "Une défaillance majeure", "Un voyant à changer", "Une usure normale"],
-                "correct": 1,
-                "explication": "Une pollution non conforme est considérée comme une défaillance majeure. Le véhicule doit être réparé."
-            },
-            {
-                "question": "Le chargement de ton véhicule peut-il dépasser ?",
-                "options": ["Ni à l'avant ni à l'arrière", "Uniquement à l'avant", "Uniquement à l'arrière", "À l'avant et à l'arrière"],
-                "correct": 2,
-                "explication": "Le chargement peut dépasser à l'arrière, mais jamais à l'avant du véhicule."
-            },
-            {
-                "question": "Qui paie les péages dans un autopartage ?",
-                "options": ["Le propriétaire", "L'utilisateur", "L'assureur", "La société d'autopartage"],
-                "correct": 1,
-                "explication": "Les péages sont toujours à la charge de l'utilisateur de l'autopartage."
+                "explication": "Le verso du constat amiable peut être complété après la signature."
             }
         ]
     }
 }
 
 # ============================================================
-# INTERFACE PRINCIPALE
+# SIDEBAR - SÉLECTION DU THÈME
 # ============================================================
 
-st.title("🚗 Quiz Code de la Route")
-st.markdown("### Choisis un thème et teste tes connaissances !")
+st.sidebar.title("🚗 Quiz Code")
+st.sidebar.markdown("---")
 
-# Sélection du thème
-theme_names = list(themes.keys())
-selected_theme = st.selectbox(
-    "📚 Sélectionne un thème :",
-    theme_names,
-    format_func=lambda x: f"{themes[x]['icon']} {x}"
-)
+# Créer les boutons dans la sidebar
+selected_theme = None
+for theme_name in themes.keys():
+    if st.sidebar.button(f"{themes[theme_name]['icon']} {theme_name}", use_container_width=True):
+        selected_theme = theme_name
 
-st.divider()
-
-# ============================================================
-# QUIZ DU THÈME SÉLECTIONNÉ
-# ============================================================
-
+# Réinitialiser le quiz si le thème change
 if selected_theme:
-    theme_data = themes[selected_theme]
-    questions = theme_data["questions"]
+    st.session_state['selected_theme'] = selected_theme
+    # Réinitialiser l'état du quiz
+    for key in list(st.session_state.keys()):
+        if key.startswith("quiz_"):
+            del st.session_state[key]
+
+# Si aucun thème sélectionné, prendre le dernier ou le premier
+if 'selected_theme' not in st.session_state:
+    st.session_state['selected_theme'] = list(themes.keys())[0]
+
+theme_name = st.session_state['selected_theme']
+
+# ============================================================
+# AFFICHAGE DU QUIZ
+# ============================================================
+
+st.title(f"{themes[theme_name]['icon']} Quiz {theme_name}")
+
+theme_data = themes[theme_name]
+questions = theme_data["questions"]
+
+# Mélanger les questions (mais de manière fixe pour la session)
+if f"shuffled_{theme_name}" not in st.session_state:
+    shuffled = questions.copy()
+    random.shuffle(shuffled)
+    st.session_state[f"shuffled_{theme_name}"] = shuffled
+
+questions = st.session_state[f"shuffled_{theme_name}"]
+
+# Initialisation du quiz
+session_key = f"quiz_{theme_name}"
+if session_key not in st.session_state:
+    st.session_state[session_key] = {
+        "current": 0,
+        "score": 0,
+        "answers": [],
+        "finished": False
+    }
+
+quiz = st.session_state[session_key]
+total = len(questions)
+current = quiz["current"]
+
+# Barre de progression
+st.progress(current / total if total > 0 else 0)
+st.markdown(f"**Question {current + 1} / {total}**")
+
+# ============================================================
+# AFFICHAGE DES QUESTIONS
+# ============================================================
+
+if not quiz["finished"] and current < total:
+    q = questions[current]
     
-    # Initialisation des variables de session pour ce thème
-    session_key = f"quiz_{selected_theme}"
-    if session_key not in st.session_state:
-        st.session_state[session_key] = {
-            "current": 0,
-            "score": 0,
-            "answers": [],
-            "finished": False
-        }
+    # Mélanger les options (mais de manière fixe pour la question)
+    q_key = f"shuffled_options_{theme_name}_{current}"
+    if q_key not in st.session_state:
+        # Créer un tuple (option, index_original)
+        options_with_index = list(enumerate(q["options"]))
+        random.shuffle(options_with_index)
+        st.session_state[q_key] = options_with_index
     
-    quiz = st.session_state[session_key]
-    total = len(questions)
-    current = quiz["current"]
+    options_with_index = st.session_state[q_key]
+    shuffled_options = [opt[1] for opt in options_with_index]
     
-    # Barre de progression
-    st.progress(current / total)
-    st.markdown(f"**Question {current + 1} / {total}**")
+    st.subheader(q["question"])
     
-    if not quiz["finished"] and current < total:
-        q = questions[current]
-        
-        st.subheader(q["question"])
-        
-        # Afficher les options
+    # Vérifier si c'est une question à choix multiples
+    is_multiple = isinstance(q["correct"], list)
+    
+    if is_multiple:
+        selected = st.multiselect(
+            "Choisis toutes les bonnes réponses :",
+            shuffled_options,
+            key=f"{session_key}_{current}"
+        )
+    else:
         selected = st.radio(
             "Choisis ta réponse :",
-            q["options"],
+            shuffled_options,
             key=f"{session_key}_{current}",
             index=None
         )
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            if st.button("✅ Valider", key=f"valider_{session_key}_{current}", use_container_width=True):
-                if selected is not None:
-                    correct_index = q["correct"]
-                    is_correct = (q["options"].index(selected) == correct_index)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button("✅ Valider", key=f"valider_{session_key}_{current}", use_container_width=True):
+            if is_multiple:
+                if selected:
+                    # Trouver les indices originaux des options sélectionnées
+                    correct_indices = q["correct"]
+                    correct_options = [q["options"][i] for i in correct_indices]
+                    is_correct = set(selected) == set(correct_options)
                     
                     quiz["answers"].append({
                         "question": q["question"],
-                        "selected": selected,
-                        "correct": q["options"][correct_index],
+                        "selected": ", ".join(selected),
+                        "correct": ", ".join(correct_options),
                         "is_correct": is_correct,
                         "explication": q["explication"]
                     })
                     
                     if is_correct:
                         quiz["score"] += 1
+                    quiz["current"] += 1
+                    st.rerun()
+                else:
+                    st.warning("Sélectionne au moins une réponse !")
+            else:
+                if selected is not None:
+                    # Trouver l'index original de l'option sélectionnée
+                    selected_original_index = q["options"].index(selected)
+                    is_correct = (selected_original_index == q["correct"])
                     
+                    quiz["answers"].append({
+                        "question": q["question"],
+                        "selected": selected,
+                        "correct": q["options"][q["correct"]],
+                        "is_correct": is_correct,
+                        "explication": q["explication"]
+                    })
+                    
+                    if is_correct:
+                        quiz["score"] += 1
                     quiz["current"] += 1
                     st.rerun()
                 else:
                     st.warning("Sélectionne une réponse avant de valider !")
-        
-        with col2:
-            if st.button("🔄 Recommencer ce quiz", key=f"reset_{session_key}", use_container_width=True):
-                st.session_state[session_key] = {
-                    "current": 0,
-                    "score": 0,
-                    "answers": [],
-                    "finished": False
-                }
-                st.rerun()
     
-    elif quiz["finished"] or current >= total:
-        # Résultats
-        st.balloons()
-        st.success("🎉 Quiz terminé !")
-        
-        score = quiz["score"]
-        pourcentage = round((score / total) * 100)
-        
-        # Affichage du score
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.markdown(f"""
-            <div style="text-align: center; padding: 20px; background-color: #f0f2f6; border-radius: 10px;">
-                <h1>{score} / {total}</h1>
-                <h2>{pourcentage}%</h2>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Appréciation
-        if pourcentage >= 90:
-            st.success("🌟 Excellent ! Tu maîtrises ce thème !")
-        elif pourcentage >= 70:
-            st.info("📚 Bien joué ! Revois quelques points pour être parfait.")
-        elif pourcentage >= 50:
-            st.warning("🤔 Pas mal, mais il faut réviser certaines parties.")
-        else:
-            st.error("📖 Il faut sérieusement réviser ce thème !")
-        
-        # Détail des réponses
-        with st.expander("📋 Voir le détail des réponses"):
-            for i, ans in enumerate(quiz["answers"]):
-                if ans["is_correct"]:
-                    st.success(f"✅ **{i+1}.** {ans['question']}")
-                else:
-                    st.error(f"❌ **{i+1}.** {ans['question']}")
-                    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;Ta réponse : **{ans['selected']}**")
-                    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;Bonne réponse : **{ans['correct']}**")
-                st.info(f"💡 {ans['explication']}")
-                st.divider()
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("🔄 Recommencer ce quiz", key=f"reset_final_{session_key}", use_container_width=True):
-                st.session_state[session_key] = {
-                    "current": 0,
-                    "score": 0,
-                    "answers": [],
-                    "finished": False
-                }
-                st.rerun()
-        with col2:
-            if st.button("🏠 Changer de thème", use_container_width=True):
-                # Réinitialiser sans changer de thème (le selectbox fera le changement)
-                for key in st.session_state.keys():
-                    if key.startswith("quiz_"):
-                        st.session_state[key]["finished"] = False
-                        st.session_state[key]["current"] = 0
-                st.rerun()
+    with col2:
+        if st.button("🔄 Recommencer ce quiz", key=f"reset_{session_key}", use_container_width=True):
+            st.session_state[session_key] = {"current": 0, "score": 0, "answers": [], "finished": False}
+            # Supprimer les mélanges pour régénérer
+            for key in list(st.session_state.keys()):
+                if key.startswith(f"shuffled_{theme_name}") or key.startswith(f"shuffled_options_{theme_name}"):
+                    del st.session_state[key]
+            st.rerun()
 
-# Pied de page
+# ============================================================
+# RÉSULTATS
+# ============================================================
+
+elif quiz["finished"] or current >= total:
+    st.balloons()
+    st.success("🎉 Quiz terminé !")
+    
+    score = quiz["score"]
+    pourcentage = round((score / total) * 100) if total > 0 else 0
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown(f"""
+        <div style="text-align: center; padding: 20px; background-color: #f0f2f6; border-radius: 10px;">
+            <h1>{score} / {total}</h1>
+            <h2>{pourcentage}%</h2>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    if pourcentage >= 90:
+        st.success("🌟 Excellent ! Tu maîtrises ce thème !")
+    elif pourcentage >= 70:
+        st.info("📚 Bien joué ! Revois quelques points pour être parfait.")
+    elif pourcentage >= 50:
+        st.warning("🤔 Pas mal, mais il faut réviser certaines parties.")
+    else:
+        st.error("📖 Il faut sérieusement réviser ce thème !")
+    
+    with st.expander("📋 Voir le détail des réponses"):
+        for i, ans in enumerate(quiz["answers"]):
+            if ans["is_correct"]:
+                st.success(f"✅ **{i+1}.** {ans['question']}")
+            else:
+                st.error(f"❌ **{i+1}.** {ans['question']}")
+                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;Ta réponse : **{ans['selected']}**")
+                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;Bonne réponse : **{ans['correct']}**")
+            st.info(f"💡 {ans['explication']}")
+            st.divider()
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🔄 Recommencer ce quiz", key=f"reset_final_{session_key}", use_container_width=True):
+            st.session_state[session_key] = {"current": 0, "score": 0, "answers": [], "finished": False}
+            for key in list(st.session_state.keys()):
+                if key.startswith(f"shuffled_{theme_name}") or key.startswith(f"shuffled_options_{theme_name}"):
+                    del st.session_state[key]
+            st.rerun()
+    with col2:
+        if st.button("🏠 Changer de thème", use_container_width=True):
+            st.session_state[session_key] = {"current": 0, "score": 0, "answers": [], "finished": False}
+            for key in list(st.session_state.keys()):
+                if key.startswith(f"shuffled_{theme_name}") or key.startswith(f"shuffled_options_{theme_name}"):
+                    del st.session_state[key]
+            st.rerun()
+
+# ============================================================
+# PIED DE PAGE
+# ============================================================
+
 st.divider()
-st.caption("🚗 Quiz Code de la Route – 5 thèmes | 48 questions")
+st.caption("🚗 Quiz Code de la Route – 5 thèmes | 39 questions")
