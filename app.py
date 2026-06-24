@@ -75,7 +75,7 @@ def load_questions_from_txt(file_path="questions.txt"):
 st.set_page_config(
     page_title="Quiz Code de la Route",
     page_icon="🚗",
-    layout="wide"
+    layout="centered"
 )
 
 # ============================================================
@@ -92,7 +92,6 @@ if not themes:
 # GESTION DE L'ÉTAT DE LA PAGE
 # ============================================================
 
-# Initialiser l'état si nécessaire
 if 'page' not in st.session_state:
     st.session_state.page = 'home'
 if 'selected_theme' not in st.session_state:
@@ -106,105 +105,179 @@ if st.session_state.page == 'home':
     # CSS pour centrer et styliser la page d'accueil
     st.markdown("""
     <style>
+    /* Fond de la page */
+    .stApp {
+        background-color: #1a1a2e;
+    }
+    
+    /* Conteneur principal */
+    .main-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        background: rgba(255,255,255,0.05);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    /* Titre principal */
     .main-title {
         text-align: center;
-        font-size: 3.5rem;
-        font-weight: 700;
+        font-size: 4.5rem !important;
+        font-weight: 800;
         margin-bottom: 0.5rem;
         color: #FF4B4B;
+        text-shadow: 0 0 30px rgba(255,75,75,0.3);
+        letter-spacing: -1px;
     }
+    
+    /* Sous-titre */
     .sub-title {
         text-align: center;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         margin-bottom: 2rem;
-        color: #666;
+        color: #ccc;
+        font-weight: 300;
     }
-    .stButton button {
-        width: 100%;
-        height: 180px;
-        background-color: #f0f2f6;
-        border: 2px solid transparent;
-        border-radius: 15px;
-        padding: 1.5rem;
-        transition: all 0.3s ease;
+    
+    /* Statistiques */
+    .stats {
+        text-align: center;
+        color: #aaa;
+        margin-bottom: 2rem;
         font-size: 1rem;
+    }
+    
+    /* Conteneur des boutons */
+    .button-container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 0.5rem;
+        gap: 0.8rem;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 0 1rem;
     }
+    
+    /* Style des boutons */
+    .stButton button {
+        width: 100% !important;
+        height: 70px !important;
+        background: linear-gradient(135deg, #2d2d44, #3d3d5c) !important;
+        border: 1px solid rgba(255,255,255,0.15) !important;
+        border-radius: 12px !important;
+        padding: 0.5rem 1.5rem !important;
+        transition: all 0.3s ease !important;
+        color: white !important;
+        font-size: 1.1rem !important;
+        font-weight: 500 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.8rem !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+        text-align: left !important;
+        cursor: pointer !important;
+    }
+    
     .stButton button:hover {
-        background-color: #e0e2e6;
-        border-color: #FF4B4B;
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transform: translateY(-2px) !important;
+        background: linear-gradient(135deg, #3d3d5c, #4d4d6c) !important;
+        border-color: #FF4B4B !important;
+        box-shadow: 0 8px 25px rgba(255,75,75,0.2) !important;
     }
-    .theme-icon-home {
-        font-size: 3rem;
+    
+    .stButton button:active {
+        transform: scale(0.98) !important;
     }
-    .theme-name-home {
-        font-size: 1.2rem;
+    
+    /* Icône dans le bouton */
+    .theme-icon {
+        font-size: 1.8rem;
+        line-height: 1;
+        min-width: 40px;
+        text-align: center;
+    }
+    
+    .theme-text {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        flex: 1;
+    }
+    
+    .theme-name {
+        font-size: 1.1rem;
         font-weight: 600;
+        color: white;
+        line-height: 1.3;
     }
-    .theme-count-home {
-        font-size: 0.9rem;
-        color: #888;
+    
+    .theme-count {
+        font-size: 0.75rem;
+        color: #aaa;
+        font-weight: 400;
+    }
+    
+    /* Pied de page */
+    .footer {
+        text-align: center;
+        color: #666;
+        margin-top: 3rem;
+        font-size: 0.8rem;
+        border-top: 1px solid rgba(255,255,255,0.05);
+        padding-top: 1.5rem;
     }
     </style>
     """, unsafe_allow_html=True)
 
     # Titre
-    st.markdown('<p class="main-title">🚗 Quiz Code de la Route</p>', unsafe_allow_html=True)
+    st.markdown('<p class="main-title">🚗 Quiz Code</p>', unsafe_allow_html=True)
     st.markdown('<p class="sub-title">Choisis un thème et teste tes connaissances !</p>', unsafe_allow_html=True)
 
     # Statistiques
     total_questions = sum(len(q) for q in themes.values())
-    st.markdown(f"<p style='text-align:center; color:#888; margin-bottom:2rem;'>📚 {len(themes)} thèmes • {total_questions} questions</p>", unsafe_allow_html=True)
+    st.markdown(f'<p class="stats">📚 {len(themes)} thèmes • {total_questions} questions</p>', unsafe_allow_html=True)
 
-    # Grille des thèmes (3 colonnes)
-    cols = st.columns(3)
+    # Affichage des boutons en colonne
     theme_list = list(themes.keys())
     
-    for i, theme_name in enumerate(theme_list):
-        with cols[i % 3]:
-            icon = theme_name.split()[0] if theme_name else "📚"
-            count = len(themes[theme_name])
-            
-            # Bouton qui change la page
-            if st.button(
-                f"{icon}\n\n**{theme_name}**\n\n{count} questions",
-                key=f"home_{theme_name}",
-                use_container_width=True
-            ):
-                st.session_state.page = 'quiz'
-                st.session_state.selected_theme = theme_name
-                # Nettoyer l'ancien état du quiz
-                for key in list(st.session_state.keys()):
-                    if key.startswith("quiz_"):
-                        del st.session_state[key]
-                st.rerun()
+    for theme_name in theme_list:
+        icon = theme_name.split()[0] if theme_name else "📚"
+        count = len(themes[theme_name])
+        
+        # Bouton personnalisé
+        if st.button(
+            f"<span class='theme-icon'>{icon}</span>"
+            f"<span class='theme-text'>"
+            f"<span class='theme-name'>{theme_name}</span>"
+            f"<span class='theme-count'>{count} questions</span>"
+            f"</span>",
+            key=f"home_{theme_name}",
+            use_container_width=True
+        ):
+            st.session_state.page = 'quiz'
+            st.session_state.selected_theme = theme_name
+            for key in list(st.session_state.keys()):
+                if key.startswith("quiz_"):
+                    del st.session_state[key]
+            st.rerun()
 
-    # Pied de page
-    st.divider()
-    st.caption("🚗 Quiz Code de la Route – Questions modifiables dans questions.txt")
+    st.markdown('<p class="footer">🚗 Questions modifiables dans questions.txt</p>', unsafe_allow_html=True)
 
 # ============================================================
 # PAGE DU QUIZ (sans sidebar)
 # ============================================================
 
 elif st.session_state.page == 'quiz':
-    # Récupérer le thème sélectionné
     theme_name = st.session_state.get('selected_theme', list(themes.keys())[0])
     questions = themes[theme_name]
     
-    # Bouton retour à l'accueil (en haut)
     col_back, col_spacer = st.columns([1, 5])
     with col_back:
-        if st.button("🏠 Retour à l'accueil", use_container_width=True):
+        if st.button("🏠 Retour", use_container_width=True):
             st.session_state.page = 'home'
             st.session_state.selected_theme = None
-            # Nettoyer l'état du quiz
             for key in list(st.session_state.keys()):
                 if key.startswith("quiz_"):
                     del st.session_state[key]
@@ -212,11 +285,9 @@ elif st.session_state.page == 'quiz':
     
     st.divider()
     
-    # Afficher le nom du thème
     icon = theme_name.split()[0] if theme_name else "📚"
     st.title(f"{icon} Quiz {theme_name}")
     
-    # Mélanger les questions
     if f"shuffled_{theme_name}" not in st.session_state:
         shuffled = questions.copy()
         random.shuffle(shuffled)
@@ -224,7 +295,6 @@ elif st.session_state.page == 'quiz':
     
     questions = st.session_state[f"shuffled_{theme_name}"]
     
-    # Initialisation du quiz
     session_key = f"quiz_{theme_name}"
     if session_key not in st.session_state:
         st.session_state[session_key] = {
@@ -238,13 +308,8 @@ elif st.session_state.page == 'quiz':
     total = len(questions)
     current = quiz["current"]
     
-    # Barre de progression
     st.progress(current / total if total > 0 else 0)
     st.markdown(f"**Question {current + 1} / {total}**")
-    
-    # ============================================================
-    # AFFICHAGE DES QUESTIONS
-    # ============================================================
     
     if not quiz["finished"] and current < total:
         q = questions[current]
@@ -321,16 +386,12 @@ elif st.session_state.page == 'quiz':
                         st.warning("Sélectionne une réponse avant de valider !")
         
         with col2:
-            if st.button("🔄 Recommencer ce quiz", key=f"reset_{session_key}", use_container_width=True):
+            if st.button("🔄 Recommencer", key=f"reset_{session_key}", use_container_width=True):
                 st.session_state[session_key] = {"current": 0, "score": 0, "answers": [], "finished": False}
                 for key in list(st.session_state.keys()):
                     if key.startswith(f"shuffled_{theme_name}") or key.startswith(f"shuffled_options_{theme_name}"):
                         del st.session_state[key]
                 st.rerun()
-    
-    # ============================================================
-    # RÉSULTATS
-    # ============================================================
     
     elif quiz["finished"] or current >= total:
         st.balloons()
@@ -370,7 +431,7 @@ elif st.session_state.page == 'quiz':
         
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("🔄 Recommencer ce quiz", key=f"reset_final_{session_key}", use_container_width=True):
+            if st.button("🔄 Recommencer", key=f"reset_final_{session_key}", use_container_width=True):
                 st.session_state[session_key] = {"current": 0, "score": 0, "answers": [], "finished": False}
                 for key in list(st.session_state.keys()):
                     if key.startswith(f"shuffled_{theme_name}") or key.startswith(f"shuffled_options_{theme_name}"):
