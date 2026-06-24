@@ -204,8 +204,17 @@ elif st.session_state.page == 'quiz':
     total = len(questions)
     current = quiz["current"]
     
-    st.progress(current / total if total > 0 else 0)
-    st.markdown(f"**Question {current + 1} / {total}**")
+    # ============================================================
+    # AFFICHAGE DE LA PROGRESSION (seulement si le quiz n'est pas fini)
+    # ============================================================
+    
+    if not quiz["finished"] and current < total:
+        st.progress(current / total if total > 0 else 0)
+        st.markdown(f"**Question {current + 1} / {total}**")
+    
+    # ============================================================
+    # DÉROULEMENT DU QUIZ
+    # ============================================================
     
     if not quiz["finished"] and current < total:
         q = questions[current]
@@ -289,7 +298,14 @@ elif st.session_state.page == 'quiz':
                         del st.session_state[key]
                 st.rerun()
     
+    # ============================================================
+    # RÉSULTATS (quand le quiz est fini)
+    # ============================================================
+    
     elif quiz["finished"] or current >= total:
+        # Marquer le quiz comme fini
+        quiz["finished"] = True
+        
         st.balloons()
         st.success("Quiz termine !")
         
