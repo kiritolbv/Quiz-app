@@ -309,9 +309,6 @@ elif st.session_state.page == 'quiz':
         # Marquer le quiz comme fini
         quiz["finished"] = True
         
-        st.balloons()
-        st.success("Quiz termine !")
-        
         # Ajouter un espace avant le score
         st.markdown("<br>", unsafe_allow_html=True)
         
