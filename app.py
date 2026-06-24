@@ -172,7 +172,6 @@ elif st.session_state.page == 'quiz':
     theme_name = st.session_state.get('selected_theme', list(themes.keys())[0])
     questions = themes[theme_name]
     
-    # Bouton retour (avec un ID unique)
     if st.button("Retour a l'accueil", key="btn_back_home", use_container_width=True):
         st.session_state.page = 'home'
         st.session_state.selected_theme = None
@@ -294,17 +293,23 @@ elif st.session_state.page == 'quiz':
         st.balloons()
         st.success("Quiz termine !")
         
+        # Ajouter un espace avant le score
+        st.markdown("<br>", unsafe_allow_html=True)
+        
         score = quiz["score"]
         pourcentage = round((score / total) * 100) if total > 0 else 0
         
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             st.markdown(f"""
-            <div style="text-align: center; padding: 20px; background-color: #f0f2f6; border-radius: 10px;">
-                <h1>{score} / {total}</h1>
-                <h2>{pourcentage}%</h2>
+            <div style="text-align: center; padding: 25px; background-color: #2d2d44; border-radius: 15px; border: 2px solid rgba(255,255,255,0.1);">
+                <h1 style="color: #ffffff; font-size: 3.5rem; margin: 0;">{score} / {total}</h1>
+                <h2 style="color: #FF6B6B; font-size: 2rem; margin: 0;">{pourcentage}%</h2>
             </div>
             """, unsafe_allow_html=True)
+        
+        # Ajouter un espace avant le message
+        st.markdown("<br>", unsafe_allow_html=True)
         
         if pourcentage >= 90:
             st.success("Excellent ! Tu maitrises ce theme !")
@@ -314,6 +319,9 @@ elif st.session_state.page == 'quiz':
             st.warning("Pas mal, mais il faut reviser certaines parties.")
         else:
             st.error("Il faut serieusement reviser ce theme !")
+        
+        # Ajouter un espace avant le détail
+        st.markdown("<br>", unsafe_allow_html=True)
         
         with st.expander("Voir le detail des reponses"):
             for i, ans in enumerate(quiz["answers"]):
@@ -325,6 +333,9 @@ elif st.session_state.page == 'quiz':
                     st.markdown(f"Bonne reponse : **{ans['correct']}**")
                 st.info(f"{ans['explication']}")
                 st.divider()
+        
+        # Ajouter un espace avant les boutons
+        st.markdown("<br>", unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         with col1:
