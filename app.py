@@ -2,11 +2,10 @@
 import random
 
 # ============================================================
-# CHARGEMENT DES QUESTIONS DEPUIS LE FICHIER TXT
+# CHARGEMENT DES QUESTIONS
 # ============================================================
 
 def load_questions_from_txt(file_path="questions.txt"):
-    """Charge les questions depuis un fichier texte formaté"""
     themes = {}
     current_theme = None
     current_question = None
@@ -15,7 +14,7 @@ def load_questions_from_txt(file_path="questions.txt"):
         with open(file_path, "r", encoding="utf-8") as f:
             lines = f.readlines()
     except FileNotFoundError:
-        st.error(f"❌ Fichier {file_path} introuvable !")
+        st.error("Fichier questions.txt introuvable !")
         return {}
     
     for line in lines:
@@ -24,8 +23,8 @@ def load_questions_from_txt(file_path="questions.txt"):
         if not line or line.startswith("#"):
             continue
         
-        if line.startswith("[THÈME]"):
-            current_theme = line.replace("[THÈME]", "").strip()
+        if line.startswith("[THEME]"):
+            current_theme = line.replace("[THEME]", "").strip()
             if current_theme not in themes:
                 themes[current_theme] = []
             continue
@@ -69,28 +68,20 @@ def load_questions_from_txt(file_path="questions.txt"):
     return themes
 
 # ============================================================
-# CONFIGURATION DE LA PAGE
+# CONFIGURATION
 # ============================================================
 
 st.set_page_config(
     page_title="Quiz Code de la Route",
-    page_icon="🚗",
+    page_icon="",
     layout="centered"
 )
-
-# ============================================================
-# CHARGEMENT DES QUESTIONS
-# ============================================================
 
 themes = load_questions_from_txt()
 
 if not themes:
-    st.error("❌ Aucune question chargée. Vérifie le fichier questions.txt")
+    st.error("Aucune question chargee. Verifie le fichier questions.txt")
     st.stop()
-
-# ============================================================
-# GESTION DE L'ÉTAT DE LA PAGE
-# ============================================================
 
 if 'page' not in st.session_state:
     st.session_state.page = 'home'
@@ -102,93 +93,69 @@ if 'selected_theme' not in st.session_state:
 # ============================================================
 
 if st.session_state.page == 'home':
-    # CSS personnalisé
     st.markdown("""
     <style>
-    /* Fond de la page */
     .stApp {
         background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     }
-    
-    /* Titre */
     .main-title {
         text-align: center;
-        font-size: 4rem;
-        font-weight: 800;
+        font-size: 5.5rem;
+        font-weight: 900;
         color: #FF6B6B;
-        margin-top: 1rem;
+        margin-top: 2rem;
         margin-bottom: 0.2rem;
-        text-shadow: 0 0 40px rgba(255,107,107,0.3);
+        text-shadow: 0 0 60px rgba(255,107,107,0.3);
+        letter-spacing: 2px;
     }
-    
-    /* Sous-titre */
     .sub-title {
         text-align: center;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         color: #a8a8b8;
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        font-weight: 300;
     }
-    
-    /* Statistiques */
     .stats {
         text-align: center;
         color: #8888aa;
         margin-bottom: 2.5rem;
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
-    
-    /* Boutons Streamlit */
     .stButton button {
         width: 100% !important;
-        height: 65px !important;
-        background: rgba(255,255,255,0.08) !important;
-        border: 1px solid rgba(255,255,255,0.12) !important;
-        border-radius: 12px !important;
+        height: 70px !important;
+        background: rgba(255,255,255,0.07) !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+        border-radius: 14px !important;
         color: #ffffff !important;
-        font-size: 1.1rem !important;
+        font-size: 1.2rem !important;
         font-weight: 500 !important;
-        margin-bottom: 0.7rem !important;
+        margin-bottom: 0.8rem !important;
         transition: all 0.3s ease !important;
-        text-align: left !important;
-        padding-left: 1.5rem !important;
+        text-align: center !important;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+        letter-spacing: 0.5px;
     }
-    
     .stButton button:hover {
         background: rgba(255,255,255,0.15) !important;
         border-color: #FF6B6B !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 25px rgba(255,107,107,0.15) !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 0 8px 30px rgba(255,107,107,0.2) !important;
     }
-    
     .stButton button:active {
-        transform: scale(0.98) !important;
-    }
-    
-    /* Pied de page */
-    .footer {
-        text-align: center;
-        color: #555577;
-        margin-top: 3rem;
-        font-size: 0.8rem;
-        border-top: 1px solid rgba(255,255,255,0.05);
-        padding-top: 1.5rem;
+        transform: scale(0.97) !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-    # Titre
-    st.markdown('<p class="main-title">🚗 Quiz Code</p>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-title">Choisis un thème et teste tes connaissances !</p>', unsafe_allow_html=True)
+    st.markdown('<p class="main-title">QUIZ CODE</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-title">Choisis un theme et teste tes connaissances</p>', unsafe_allow_html=True)
 
-    # Statistiques
     total_questions = sum(len(q) for q in themes.values())
-    st.markdown(f'<p class="stats">📚 {len(themes)} thèmes • {total_questions} questions</p>', unsafe_allow_html=True)
+    st.markdown(f'<p class="stats">{len(themes)} themes  •  {total_questions} questions</p>', unsafe_allow_html=True)
 
-    # Boutons pour chaque thème
     for theme_name in themes.keys():
         count = len(themes[theme_name])
-        # Affichage simple : nom + nombre de questions
         if st.button(f"{theme_name}  ({count} questions)", use_container_width=True):
             st.session_state.page = 'quiz'
             st.session_state.selected_theme = theme_name
@@ -196,8 +163,6 @@ if st.session_state.page == 'home':
                 if key.startswith("quiz_"):
                     del st.session_state[key]
             st.rerun()
-
-    st.markdown('<p class="footer">🚗 Questions modifiables dans questions.txt</p>', unsafe_allow_html=True)
 
 # ============================================================
 # PAGE DU QUIZ
@@ -207,8 +172,7 @@ elif st.session_state.page == 'quiz':
     theme_name = st.session_state.get('selected_theme', list(themes.keys())[0])
     questions = themes[theme_name]
     
-    # Bouton retour
-    if st.button("🏠 Retour à l'accueil", use_container_width=True):
+    if st.button("Retour a l'accueil", use_container_width=True):
         st.session_state.page = 'home'
         st.session_state.selected_theme = None
         for key in list(st.session_state.keys()):
@@ -218,9 +182,8 @@ elif st.session_state.page == 'quiz':
     
     st.divider()
     
-    st.title(f"📝 {theme_name}")
+    st.title(f"Quiz : {theme_name}")
     
-    # Mélanger les questions
     if f"shuffled_{theme_name}" not in st.session_state:
         shuffled = questions.copy()
         random.shuffle(shuffled)
@@ -262,13 +225,13 @@ elif st.session_state.page == 'quiz':
         
         if is_multiple:
             selected = st.multiselect(
-                "Choisis toutes les bonnes réponses :",
+                "Choisis toutes les bonnes reponses :",
                 shuffled_options,
                 key=f"{session_key}_{current}"
             )
         else:
             selected = st.radio(
-                "Choisis ta réponse :",
+                "Choisis ta reponse :",
                 shuffled_options,
                 key=f"{session_key}_{current}",
                 index=None
@@ -277,7 +240,7 @@ elif st.session_state.page == 'quiz':
         col1, col2 = st.columns(2)
         
         with col1:
-            if st.button("✅ Valider", key=f"valider_{session_key}_{current}", use_container_width=True):
+            if st.button("Valider", key=f"valider_{session_key}_{current}", use_container_width=True):
                 if is_multiple:
                     if selected:
                         correct_indices = q["correct"]
@@ -297,7 +260,7 @@ elif st.session_state.page == 'quiz':
                         quiz["current"] += 1
                         st.rerun()
                     else:
-                        st.warning("Sélectionne au moins une réponse !")
+                        st.warning("Selectionne au moins une reponse !")
                 else:
                     if selected is not None:
                         selected_original_index = q["options"].index(selected)
@@ -316,10 +279,10 @@ elif st.session_state.page == 'quiz':
                         quiz["current"] += 1
                         st.rerun()
                     else:
-                        st.warning("Sélectionne une réponse avant de valider !")
+                        st.warning("Selectionne une reponse avant de valider !")
         
         with col2:
-            if st.button("🔄 Recommencer", key=f"reset_{session_key}", use_container_width=True):
+            if st.button("Recommencer", key=f"reset_{session_key}", use_container_width=True):
                 st.session_state[session_key] = {"current": 0, "score": 0, "answers": [], "finished": False}
                 for key in list(st.session_state.keys()):
                     if key.startswith(f"shuffled_{theme_name}") or key.startswith(f"shuffled_options_{theme_name}"):
@@ -328,7 +291,7 @@ elif st.session_state.page == 'quiz':
     
     elif quiz["finished"] or current >= total:
         st.balloons()
-        st.success("🎉 Quiz terminé !")
+        st.success("Quiz termine !")
         
         score = quiz["score"]
         pourcentage = round((score / total) * 100) if total > 0 else 0
@@ -343,35 +306,35 @@ elif st.session_state.page == 'quiz':
             """, unsafe_allow_html=True)
         
         if pourcentage >= 90:
-            st.success("🌟 Excellent ! Tu maîtrises ce thème !")
+            st.success("Excellent ! Tu maitrises ce theme !")
         elif pourcentage >= 70:
-            st.info("📚 Bien joué ! Revois quelques points pour être parfait.")
+            st.info("Bien joue ! Revois quelques points pour etre parfait.")
         elif pourcentage >= 50:
-            st.warning("🤔 Pas mal, mais il faut réviser certaines parties.")
+            st.warning("Pas mal, mais il faut reviser certaines parties.")
         else:
-            st.error("📖 Il faut sérieusement réviser ce thème !")
+            st.error("Il faut serieusement reviser ce theme !")
         
-        with st.expander("📋 Voir le détail des réponses"):
+        with st.expander("Voir le detail des reponses"):
             for i, ans in enumerate(quiz["answers"]):
                 if ans["is_correct"]:
-                    st.success(f"✅ **{i+1}.** {ans['question']}")
+                    st.success(f"**{i+1}.** {ans['question']}")
                 else:
-                    st.error(f"❌ **{i+1}.** {ans['question']}")
-                    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;Ta réponse : **{ans['selected']}**")
-                    st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;Bonne réponse : **{ans['correct']}**")
-                st.info(f"💡 {ans['explication']}")
+                    st.error(f"**{i+1}.** {ans['question']}")
+                    st.markdown(f"Ta reponse : **{ans['selected']}**")
+                    st.markdown(f"Bonne reponse : **{ans['correct']}**")
+                st.info(f"{ans['explication']}")
                 st.divider()
         
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("🔄 Recommencer", key=f"reset_final_{session_key}", use_container_width=True):
+            if st.button("Recommencer", key=f"reset_final_{session_key}", use_container_width=True):
                 st.session_state[session_key] = {"current": 0, "score": 0, "answers": [], "finished": False}
                 for key in list(st.session_state.keys()):
                     if key.startswith(f"shuffled_{theme_name}") or key.startswith(f"shuffled_options_{theme_name}"):
                         del st.session_state[key]
                 st.rerun()
         with col2:
-            if st.button("🏠 Retour à l'accueil", use_container_width=True):
+            if st.button("Retour a l'accueil", use_container_width=True):
                 st.session_state.page = 'home'
                 st.session_state.selected_theme = None
                 for key in list(st.session_state.keys()):
