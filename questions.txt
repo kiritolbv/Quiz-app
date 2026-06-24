@@ -1,0 +1,343 @@
+﻿# ============================================================
+# QUIZ CODE DE LA ROUTE - QUESTIONS
+# ============================================================
+# 📖 FORMAT À SUIVRE :
+#
+# [THÈME] Nom du thème
+# Q: Texte de la question
+# O: Option 1
+# O: Option 2
+# O: Option 3
+# O: Option 4
+# C: Index de la bonne réponse (0, 1, 2 ou 3) OU [0,1,2] pour choix multiples
+# E: Explication
+# ---
+#
+# Exemple :
+# [THÈME] 🏎️ Vitesse
+# Q: Quelle est la vitesse maximale en agglomération ?
+# O: 30 km/h
+# O: 40 km/h
+# O: 50 km/h
+# O: 60 km/h
+# C: 2
+# E: La vitesse maximale en ville est de 50 km/h.
+# ---
+# ============================================================
+
+[THÈME] 🏎️ Vitesse
+Q: Quelle est la vitesse maximale autorisée en agglomération ?
+O: 30 km/h
+O: 40 km/h
+O: 50 km/h
+O: 60 km/h
+C: 2
+E: La vitesse maximale en ville est de 50 km/h (sauf zones 30).
+---
+Q: Quelle est la vitesse maximale autorisée en rase campagne (hors agglomération) ?
+O: 70 km/h
+O: 80 km/h
+O: 90 km/h
+O: 100 km/h
+C: 1
+E: La limite générale hors agglomération est de 80 km/h.
+---
+Q: Qu'est-ce qui compose la distance d'arrêt ?
+O: Freinage × 2
+O: Réaction + Freinage
+O: Réaction × Freinage
+O: Arrêt - Réaction
+C: 1
+E: La distance d'arrêt est la somme des distances de réaction et de freinage.
+---
+Q: Qu'est-ce qui augmente la distance de réaction ? (plusieurs réponses)
+O: Alcool
+O: Fatigue
+O: Bonne visibilité
+O: Distraction
+C: [0,1,3]
+E: L'alcool, la fatigue et la distraction allongent le temps de réaction.
+---
+Q: Quelle est la vitesse maximale sur une route 2x1 voie (2 voies d'un côté, 1 de l'autre) ?
+O: 70 km/h
+O: 80 km/h
+O: 90 km/h
+O: 110 km/h
+C: 2
+E: Sur route à chaussées séparées (2x1), la vitesse est de 90 km/h.
+---
+Q: En temps de pluie, quelles distances sont augmentées ? (plusieurs réponses)
+O: Distance de réaction
+O: Distance de freinage
+O: Distance d'arrêt
+O: Distance de visibilité
+C: [1,2]
+E: La pluie augmente la distance de freinage et donc la distance d'arrêt.
+---
+Q: Quelle est la vitesse maximale sur autoroute en temps de pluie ?
+O: 80 km/h
+O: 100 km/h
+O: 110 km/h
+O: 130 km/h
+C: 2
+E: Sur autoroute sous la pluie, la vitesse est limitée à 110 km/h.
+---
+Q: Quelle est la vitesse maximale en temps de verglas ?
+O: 30 km/h
+O: 40 km/h
+O: 50 km/h
+O: 70 km/h
+C: 2
+E: En cas de verglas, la vitesse maximale est de 50 km/h.
+
+[THÈME] 🚦 Priorité
+Q: Le conducteur A est sur la voie principale, le conducteur B est sur la voie verte. Qui a la priorité ?
+O: Conducteur A
+O: Conducteur B
+O: Le plus rapide
+O: Celui qui arrive en premier
+C: 0
+E: Le conducteur A sur la voie principale est prioritaire. La voie verte n'est pas prioritaire, c'est celui qui en sort qui doit céder le passage.
+---
+Q: Qui est prioritaire face à un obstacle sur la route ?
+O: Celui qui arrive en premier
+O: Le plus lent
+O: Le conducteur sans obstacle
+O: Celui qui klaxonne
+C: 2
+E: Celui qui rencontre un obstacle doit céder le passage.
+---
+Q: Comment fonctionnent les priorités dans un giratoire ?
+O: Priorité à droite
+O: Priorité aux véhicules déjà engagés
+O: Priorité à celui qui entre
+O: Priorité au plus rapide
+C: 1
+E: Dans un giratoire, la priorité est aux véhicules déjà engagés (priorité à gauche).
+---
+Q: Comment fonctionnent les priorités dans un rond-point (sans signalisation) ?
+O: Priorité à droite
+O: Priorité à gauche
+O: Priorité aux véhicules déjà engagés
+O: Priorité à celui qui entre
+C: 0
+E: Dans un rond-point, la règle par défaut est la priorité à droite.
+---
+Q: Dans le cas d'un carrefour à feux classique, je veux tourner à gauche. Qui a la priorité ?
+O: Les véhicules venant de droite
+O: Les véhicules venant d'en face
+O: Les piétons
+O: Personne, je suis prioritaire
+C: 1
+E: Au feu vert, si tu tournes, tu laisses passer les usagers venant en face.
+---
+Q: Dans le cas d'un carrefour avec des feux à flèche, je veux tourner à gauche et le feu flèche gauche est vert. Ai-je la priorité ?
+O: Non
+O: Oui
+O: Seulement si j'ai mon clignotant
+O: Seulement la nuit
+C: 1
+E: La flèche verte indique que tu es prioritaire pour tourner à gauche.
+
+[THÈME] 💡 Feux & Éclairage
+Q: Dans des virages serrés, quels feux puis-je activer en complément ?
+O: Feux de route
+O: Feux de détresse
+O: Feux de brouillard avant
+O: Feux de position
+C: 2
+E: Les feux de brouillard avant éclairent plus large dans les virages serrés.
+---
+Q: Dans quelles situations peut-on allumer les feux de brouillard arrière ? (plusieurs réponses)
+O: Fortes pluies
+O: Brouillard épais
+O: Nuit claire
+O: En ville éclairée
+C: [0,1]
+E: Les feux de brouillard arrière sont réservés aux conditions de visibilité très réduite.
+---
+Q: En agglomération éclairée, quels feux doivent être activés ?
+O: Feux de route
+O: Feux de croisement
+O: Feux de détresse
+O: Feux de brouillard
+C: 1
+E: En ville éclairée, on utilise les feux de croisement (pas les feux de route).
+---
+Q: Quand puis-je activer les feux de route ?
+O: Quand il y a du brouillard
+O: Quand je roule en ville
+O: Quand aucun autre véhicule n'est devant moi ni n'arrive en face
+O: Quand je suis en agglomération
+C: 2
+E: Les feux de route s'utilisent quand il n'y a personne devant moi (ni dans le même sens, ni en face).
+---
+Q: Quel est l'usage des feux de position ?
+O: Éclairer la route
+O: Signaler un danger
+O: Signaler ma présence
+O: Indiquer un virage
+C: 2
+E: Les feux de position rendent le véhicule visible aux autres usagers.
+---
+Q: Dans un giratoire, comment gérer les clignotants pour aller tout droit et le placement ?
+O: Je reste au centre et je mets le clignotant gauche
+O: Extérieur du rond-point + clignotant droit avant de sortir
+O: Je mets le clignotant gauche tout le temps
+O: Je ne mets pas de clignotant
+C: 1
+E: Pour aller tout droit, on reste à l'extérieur et on met le clignotant droit avant de sortir.
+---
+Q: Quand activer les feux de détresse ?
+O: Quand je roule vite
+O: Ralentissement important ou véhicule immobilisé
+O: Quand je change de direction
+O: Quand je suis en tort
+C: 1
+E: Les feux de détresse signalent un danger inhabituel ou un ralentissement brutal.
+
+[THÈME] 🅿️ Stationnement
+Q: Que signifie une ligne jaune continue ?
+O: Stationnement interdit, arrêt autorisé
+O: Arrêt et stationnement interdits
+O: Arrêt interdit, stationnement autorisé
+O: Rien de particulier
+C: 1
+E: La ligne jaune continue interdit l'arrêt ET le stationnement.
+---
+Q: Que signifie une ligne jaune discontinue ?
+O: Stationnement interdit, arrêt autorisé
+O: Arrêt et stationnement interdits
+O: Arrêt interdit, stationnement autorisé
+O: Stationnement gratuit
+C: 0
+E: La ligne jaune discontinue interdit le stationnement mais autorise l'arrêt.
+---
+Q: Puis-je consulter mon téléphone lorsque mon véhicule est arrêté et que le moteur est allumé ?
+O: Oui
+O: Non
+O: Oui, seulement si je suis sur le parking
+O: Oui, seulement si j'ai le Bluetooth
+C: 1
+E: Le téléphone en main est interdit sauf si le véhicule est correctement stationné (moteur coupé).
+---
+Q: Dans une voie à sens unique, de quel côté puis-je me stationner ?
+O: Uniquement à droite
+O: Uniquement à gauche
+O: Gauche et droite
+O: Seulement sur le trottoir
+C: 2
+E: En sens unique, le stationnement est autorisé des deux côtés.
+
+[THÈME] 🛠️ Divers
+Q: Quand je rencontre un panneau d'obligation de chaînes à neige, j'ai l'obligation que mon véhicule en soit équipé sur :
+O: Les 4 roues
+O: Les roues motrices seulement
+O: Les roues avant
+O: Les roues arrière
+C: 1
+E: Les chaînes se montent sur les roues motrices du véhicule.
+---
+Q: À quelle distance éclairent les feux de croisement ?
+O: 10 mètres
+O: 30 mètres environ
+O: 50 mètres
+O: 100 mètres
+C: 1
+E: Les feux de croisement éclairent à environ 30 mètres.
+---
+Q: À quelle distance éclairent les feux de route ?
+O: 30 mètres
+O: 50 mètres
+O: 80 mètres
+O: 100 mètres environ
+C: 3
+E: Les feux de route éclairent à environ 100 mètres.
+---
+Q: Quand un véhicule me dépasse, je dois : (plusieurs réponses)
+O: Maintenir mon allure
+O: Me serrer à droite
+O: Accélérer
+O: Ne jamais accélérer
+C: [0,1,3]
+E: Je maintiens mon allure, je me serre à droite et je n'accélère jamais.
+---
+Q: En tant que piéton, puis-je traverser la route en présence d'un bus à proximité ?
+O: Oui
+O: Non
+O: Oui, si le bus est à l'arrêt
+O: Oui, si je cours
+C: 1
+E: Il est interdit de traverser devant ou derrière un bus ; il faut attendre son départ.
+---
+Q: En tant que conducteur, un bus s'arrête devant moi à un arrêt. Que dois-je faire ?
+O: Le dépasser par la droite
+O: Attendre qu'il redémarre sans dépasser
+O: Klaxonner pour qu'il avance
+O: Le dépasser si c'est sûr
+C: 1
+E: Il faut attendre que le bus redémarre, car des piétons peuvent traverser.
+---
+Q: Pour un véhicule électrique, de quoi dépend le temps de conduite ? (plusieurs réponses)
+O: De la température extérieure
+O: De la façon de conduire
+O: De la charge de la batterie
+O: Du nombre de passagers
+C: [1,2]
+E: L'autonomie dépend du style de conduite et du niveau de charge de la batterie.
+---
+Q: Quel niveau contrôle la tige moteur ?
+O: Niveau de liquide de refroidissement
+O: Niveau d'huile
+O: Niveau de liquide de frein
+O: Niveau de lave-glace
+C: 1
+E: La jauge d'huile mesure le niveau d'huile moteur.
+---
+Q: Que signifie le voyant pression ?
+O: Pression d'huile trop basse
+O: Pneus sous-gonflés
+O: Pression des freins
+O: Pression de la batterie
+C: 1
+E: Le voyant de pression indique que les pneus sont sous-gonflés.
+---
+Q: Un niveau de pollution non conforme déclenche une défaillance de quel type au contrôle technique ?
+O: Mineure
+O: Majeure
+O: Critique
+O: Aucune
+C: 1
+E: Une pollution non conforme est une défaillance majeure au contrôle technique.
+---
+Q: Un chargement sur le toit peut dépasser de combien ?
+O: 1 mètre à l'avant, 0 à l'arrière
+O: 2 mètres à l'arrière, 0 à l'avant
+O: 3 mètres à l'arrière, 0 à l'avant
+O: 1 mètre partout
+C: 2
+E: Le chargement peut dépasser à l'arrière (jusqu'à 3 m) mais jamais à l'avant.
+---
+Q: Quelle est la limite d'alcool pour un jeune conducteur ?
+O: 0,50 g/L
+O: 0,20 g/L
+O: 0,10 g/L
+O: 0,80 g/L
+C: 1
+E: La limite est de 0,20 g/L pour les jeunes conducteurs (contre 0,50 g/L pour les confirmés).
+---
+Q: Qu'est-ce qui est inclus dans l'abonnement d'autopartage ? (plusieurs réponses)
+O: Énergie (carburant/électricité)
+O: Assurance
+O: Entretien
+O: Péages
+C: [0,1,2]
+E: L'autopartage inclut l'énergie, l'assurance et l'entretien. Les péages sont à la charge de l'utilisateur.
+---
+Q: Quel côté du constat amiable peut être complété après la signature ?
+O: Le recto
+O: Le verso
+O: Les deux côtés
+O: Aucun côté
+C: 1
+E: Le verso du constat amiable peut être complété après la signature.
