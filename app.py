@@ -102,127 +102,73 @@ if 'selected_theme' not in st.session_state:
 # ============================================================
 
 if st.session_state.page == 'home':
-    # CSS pour centrer et styliser la page d'accueil
+    # CSS personnalisé
     st.markdown("""
     <style>
     /* Fond de la page */
     .stApp {
-        background-color: #1a1a2e;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     }
     
-    /* Conteneur principal */
-    .main-container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-        background: rgba(255,255,255,0.05);
-        border-radius: 20px;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.1);
-    }
-    
-    /* Titre principal */
+    /* Titre */
     .main-title {
         text-align: center;
-        font-size: 4.5rem !important;
+        font-size: 4rem;
         font-weight: 800;
-        margin-bottom: 0.5rem;
-        color: #FF4B4B;
-        text-shadow: 0 0 30px rgba(255,75,75,0.3);
-        letter-spacing: -1px;
+        color: #FF6B6B;
+        margin-top: 1rem;
+        margin-bottom: 0.2rem;
+        text-shadow: 0 0 40px rgba(255,107,107,0.3);
     }
     
     /* Sous-titre */
     .sub-title {
         text-align: center;
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+        color: #a8a8b8;
         margin-bottom: 2rem;
-        color: #ccc;
-        font-weight: 300;
     }
     
     /* Statistiques */
     .stats {
         text-align: center;
-        color: #aaa;
-        margin-bottom: 2rem;
+        color: #8888aa;
+        margin-bottom: 2.5rem;
         font-size: 1rem;
     }
     
-    /* Conteneur des boutons */
-    .button-container {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-        max-width: 400px;
-        margin: 0 auto;
-        padding: 0 1rem;
-    }
-    
-    /* Style des boutons */
+    /* Boutons Streamlit */
     .stButton button {
         width: 100% !important;
-        height: 70px !important;
-        background: linear-gradient(135deg, #2d2d44, #3d3d5c) !important;
-        border: 1px solid rgba(255,255,255,0.15) !important;
+        height: 65px !important;
+        background: rgba(255,255,255,0.08) !important;
+        border: 1px solid rgba(255,255,255,0.12) !important;
         border-radius: 12px !important;
-        padding: 0.5rem 1.5rem !important;
-        transition: all 0.3s ease !important;
-        color: white !important;
+        color: #ffffff !important;
         font-size: 1.1rem !important;
         font-weight: 500 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 0.8rem !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+        margin-bottom: 0.7rem !important;
+        transition: all 0.3s ease !important;
         text-align: left !important;
-        cursor: pointer !important;
+        padding-left: 1.5rem !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
     }
     
     .stButton button:hover {
+        background: rgba(255,255,255,0.15) !important;
+        border-color: #FF6B6B !important;
         transform: translateY(-2px) !important;
-        background: linear-gradient(135deg, #3d3d5c, #4d4d6c) !important;
-        border-color: #FF4B4B !important;
-        box-shadow: 0 8px 25px rgba(255,75,75,0.2) !important;
+        box-shadow: 0 8px 25px rgba(255,107,107,0.15) !important;
     }
     
     .stButton button:active {
         transform: scale(0.98) !important;
     }
     
-    /* Icône dans le bouton */
-    .theme-icon {
-        font-size: 1.8rem;
-        line-height: 1;
-        min-width: 40px;
-        text-align: center;
-    }
-    
-    .theme-text {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        flex: 1;
-    }
-    
-    .theme-name {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: white;
-        line-height: 1.3;
-    }
-    
-    .theme-count {
-        font-size: 0.75rem;
-        color: #aaa;
-        font-weight: 400;
-    }
-    
     /* Pied de page */
     .footer {
         text-align: center;
-        color: #666;
+        color: #555577;
         margin-top: 3rem;
         font-size: 0.8rem;
         border-top: 1px solid rgba(255,255,255,0.05);
@@ -239,23 +185,11 @@ if st.session_state.page == 'home':
     total_questions = sum(len(q) for q in themes.values())
     st.markdown(f'<p class="stats">📚 {len(themes)} thèmes • {total_questions} questions</p>', unsafe_allow_html=True)
 
-    # Affichage des boutons en colonne
-    theme_list = list(themes.keys())
-    
-    for theme_name in theme_list:
-        icon = theme_name.split()[0] if theme_name else "📚"
+    # Boutons pour chaque thème
+    for theme_name in themes.keys():
         count = len(themes[theme_name])
-        
-        # Bouton personnalisé
-        if st.button(
-            f"<span class='theme-icon'>{icon}</span>"
-            f"<span class='theme-text'>"
-            f"<span class='theme-name'>{theme_name}</span>"
-            f"<span class='theme-count'>{count} questions</span>"
-            f"</span>",
-            key=f"home_{theme_name}",
-            use_container_width=True
-        ):
+        # Affichage simple : nom + nombre de questions
+        if st.button(f"{theme_name}  ({count} questions)", use_container_width=True):
             st.session_state.page = 'quiz'
             st.session_state.selected_theme = theme_name
             for key in list(st.session_state.keys()):
@@ -266,28 +200,27 @@ if st.session_state.page == 'home':
     st.markdown('<p class="footer">🚗 Questions modifiables dans questions.txt</p>', unsafe_allow_html=True)
 
 # ============================================================
-# PAGE DU QUIZ (sans sidebar)
+# PAGE DU QUIZ
 # ============================================================
 
 elif st.session_state.page == 'quiz':
     theme_name = st.session_state.get('selected_theme', list(themes.keys())[0])
     questions = themes[theme_name]
     
-    col_back, col_spacer = st.columns([1, 5])
-    with col_back:
-        if st.button("🏠 Retour", use_container_width=True):
-            st.session_state.page = 'home'
-            st.session_state.selected_theme = None
-            for key in list(st.session_state.keys()):
-                if key.startswith("quiz_"):
-                    del st.session_state[key]
-            st.rerun()
+    # Bouton retour
+    if st.button("🏠 Retour à l'accueil", use_container_width=True):
+        st.session_state.page = 'home'
+        st.session_state.selected_theme = None
+        for key in list(st.session_state.keys()):
+            if key.startswith("quiz_"):
+                del st.session_state[key]
+        st.rerun()
     
     st.divider()
     
-    icon = theme_name.split()[0] if theme_name else "📚"
-    st.title(f"{icon} Quiz {theme_name}")
+    st.title(f"📝 {theme_name}")
     
+    # Mélanger les questions
     if f"shuffled_{theme_name}" not in st.session_state:
         shuffled = questions.copy()
         random.shuffle(shuffled)
