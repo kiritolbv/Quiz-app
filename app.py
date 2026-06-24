@@ -156,7 +156,7 @@ if st.session_state.page == 'home':
 
     for theme_name in themes.keys():
         count = len(themes[theme_name])
-        if st.button(f"{theme_name}  ({count} questions)", use_container_width=True):
+        if st.button(f"{theme_name}  ({count} questions)", key=f"home_{theme_name}", use_container_width=True):
             st.session_state.page = 'quiz'
             st.session_state.selected_theme = theme_name
             for key in list(st.session_state.keys()):
@@ -172,7 +172,8 @@ elif st.session_state.page == 'quiz':
     theme_name = st.session_state.get('selected_theme', list(themes.keys())[0])
     questions = themes[theme_name]
     
-    if st.button("Retour a l'accueil", use_container_width=True):
+    # Bouton retour (avec un ID unique)
+    if st.button("Retour a l'accueil", key="btn_back_home", use_container_width=True):
         st.session_state.page = 'home'
         st.session_state.selected_theme = None
         for key in list(st.session_state.keys()):
@@ -227,20 +228,20 @@ elif st.session_state.page == 'quiz':
             selected = st.multiselect(
                 "Choisis toutes les bonnes reponses :",
                 shuffled_options,
-                key=f"{session_key}_{current}"
+                key=f"ms_{session_key}_{current}"
             )
         else:
             selected = st.radio(
                 "Choisis ta reponse :",
                 shuffled_options,
-                key=f"{session_key}_{current}",
+                key=f"rd_{session_key}_{current}",
                 index=None
             )
         
         col1, col2 = st.columns(2)
         
         with col1:
-            if st.button("Valider", key=f"valider_{session_key}_{current}", use_container_width=True):
+            if st.button("Valider", key=f"btn_val_{session_key}_{current}", use_container_width=True):
                 if is_multiple:
                     if selected:
                         correct_indices = q["correct"]
@@ -282,7 +283,7 @@ elif st.session_state.page == 'quiz':
                         st.warning("Selectionne une reponse avant de valider !")
         
         with col2:
-            if st.button("Recommencer", key=f"reset_{session_key}", use_container_width=True):
+            if st.button("Recommencer", key=f"btn_reset_{session_key}_{current}", use_container_width=True):
                 st.session_state[session_key] = {"current": 0, "score": 0, "answers": [], "finished": False}
                 for key in list(st.session_state.keys()):
                     if key.startswith(f"shuffled_{theme_name}") or key.startswith(f"shuffled_options_{theme_name}"):
@@ -327,14 +328,14 @@ elif st.session_state.page == 'quiz':
         
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("Recommencer", key=f"reset_final_{session_key}", use_container_width=True):
+            if st.button("Recommencer", key=f"btn_reset_final_{session_key}", use_container_width=True):
                 st.session_state[session_key] = {"current": 0, "score": 0, "answers": [], "finished": False}
                 for key in list(st.session_state.keys()):
                     if key.startswith(f"shuffled_{theme_name}") or key.startswith(f"shuffled_options_{theme_name}"):
                         del st.session_state[key]
                 st.rerun()
         with col2:
-            if st.button("Retour a l'accueil", use_container_width=True):
+            if st.button("Retour a l'accueil", key=f"btn_back_final_{session_key}", use_container_width=True):
                 st.session_state.page = 'home'
                 st.session_state.selected_theme = None
                 for key in list(st.session_state.keys()):
