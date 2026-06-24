@@ -211,6 +211,9 @@ elif st.session_state.page == 'quiz':
     if not quiz["finished"] and current < total:
         st.progress(current / total if total > 0 else 0)
         st.markdown(f"**Question {current + 1} / {total}**")
+    else:
+        st.progress(1.0)  # Barre pleine
+        st.markdown("**Quiz terminé !**")
     
     # ============================================================
     # DÉROULEMENT DU QUIZ
